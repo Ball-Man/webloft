@@ -4,6 +4,8 @@ import os
 import shutil
 import glob
 
+from . import markdown
+
 import yaml
 import django.template as dj_template
 
@@ -22,7 +24,10 @@ def get_context(base_dir):
     The first file that will be searched is index.yaml.
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
-        return dj_template.Context(yaml.load(file))
+        # Load yaml and parse markdown
+        dic = {k: markdown.safe_markdown(v)
+               for k, v in yaml.load(file).items()}
+        return dj_template.Context(dic)
 
 
 def render(context, file='index.html', template_name='aquarius'):

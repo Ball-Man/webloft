@@ -2,13 +2,13 @@
 <html>
 
 <head>
-<title>{{ name }}</title>
+<title>{{ name | safe}}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-<h1>{{ name }}</h1>
-{{ description }}
+<h1>{{ name | safe}}</h1>
+{{ description | safe}}
 </body>
 
 </html>
