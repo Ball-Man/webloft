@@ -41,7 +41,7 @@ def render(context, file='index.html', template_name='aquarius'):
     return template.render(context)
 
 
-def build(base_dir=pt.curdir, template_name='aquarius', dist_dir='dist',
+def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
           templated_exts=('.html',)):
     """Render and save an entire template, given the base dir.
 
@@ -52,7 +52,8 @@ def build(base_dir=pt.curdir, template_name='aquarius', dist_dir='dist',
     possible to use base templates, which is a common practice in the
     django templating workflow.
     """
-    abs_template_files = glob.glob(pt.join(TEMPLATES, template_name, '**', '*'),
+    abs_template_files = glob.glob(pt.join(TEMPLATES, template_name, '**',
+                                           '*'),
                                    recursive=True)
     template_files = (pt.relpath(path, pt.join(TEMPLATES, template_name))
                       for path in abs_template_files)
