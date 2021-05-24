@@ -74,5 +74,5 @@ def build(base_dir=pt.curdir, template_name='aquarius', dist_dir='dist',
                 with open(dest, 'w') as fout:
                     fout.write(render(get_context(base_dir), file,
                                template_name))
-        elif pt.isfile(abs_file):
+        elif pt.isfile(abs_file) and pt.basename(file)[0] != '_':
             shutil.copy(abs_file, dest)
