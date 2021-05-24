@@ -26,7 +26,7 @@ def get_context(base_dir):
     with open(pt.join(base_dir, 'index.yaml')) as file:
         # Load yaml and parse markdown
         dic = {k: markdown.safe_markdown(v)
-               for k, v in yaml.load(file).items()}
+               for k, v in yaml.safe_load(file).items()}
         return dj_template.Context(dic)
 
 
