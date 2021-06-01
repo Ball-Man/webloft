@@ -4,12 +4,18 @@ import os
 import shutil
 import glob
 
-from . import markdown
-
+import markdown
 import yaml
 import django.template as dj_template
 
 TEMPLATES = pt.join(pt.dirname(__file__), 'templates')
+
+# Fields that will be rendered using markdown
+# All other fields will be used as plain text
+# TODO: maybe transition this list of fields in some template-specific
+#       file, so that each template can make small variations if
+#       desired.
+MD_FIELDS = {'description'}
 
 
 def get_context(base_dir):
@@ -25,9 +31,13 @@ def get_context(base_dir):
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
         # Load yaml and parse markdown
-        dic = {k: markdown.safe_markdown(v)
-               for k, v in yaml.safe_load(file).items()}
-        return dj_template.Context(dic)
+        context_dic = yaml.safe_load(file)
+
+    for k in tuple(context_dic.keys()):
+        if k in MD_FIELDS:
+            context_dic[k] = markdown.markdown(context_dic[k])
+
+    return dj_template.Context(context_dic)
 
 
 def render(context, file='index.html', template_name='aquarius'):
