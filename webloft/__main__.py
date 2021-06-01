@@ -1,16 +1,16 @@
-import os
 import logging
 
 import webloft
 
-import django.template
 
 LOGGING_FILE = 'webloft.log'
 LOGGING_LEVEL = logging.DEBUG
 
+
 def main():
     setup_logging()
     webloft.build()
+
 
 def setup_logging():
     """Setup the loggers and log level for mile.
@@ -34,6 +34,7 @@ def setup_logging():
         logging.debug('logging enabled')
     else:
         logging.disable()
+
 
 if __name__ == "__main__":
     main()
