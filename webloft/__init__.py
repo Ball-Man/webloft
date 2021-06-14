@@ -20,8 +20,20 @@ TEMPLATES = pt.join(pt.dirname(__file__), 'templates')
 MD_FIELDS = {'description'}
 
 # Template constants
-PROJECT_FILE_NAME = '_project.html'
+PROJECT_TEMPLATE_FILE_NAME = '_project.html'
+PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 PROJECT_DEFAULT_DICT = defaultdict(lambda: 'N/A')
+
+
+def get_projects(base_dir=pt.curdir):
+    """Return the list of projects in the selected base directory.
+
+    A project is identified if it contains a file named
+    PROJECT_CONFIG_FILE_NAME.
+    """
+    return [pt.basename(pt.dirname(file)) for file
+            in glob.glob(pt.join(base_dir, '**', '*'))
+            if pt.basename(file) == PROJECT_CONFIG_FILE_NAME]
 
 
 def get_context(base_dir):
@@ -71,7 +83,7 @@ def render_project(context, project_name, template_name='aquarius'):
     """
     context['project'] = context[project_name]
 
-    ret = render(context, PROJECT_FILE_NAME, template_name)
+    ret = render(context, PROJECT_TEMPLATE_FILE_NAME, template_name)
 
     context['project'] = PROJECT_DEFAULT_DICT
     return ret
