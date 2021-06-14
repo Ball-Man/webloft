@@ -3,6 +3,7 @@ import os.path as pt
 import os
 import shutil
 import glob
+import logging
 
 from collections import defaultdict
 
@@ -136,19 +137,36 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
             os.mkdir(dest)
         elif pt.isfile(abs_file) \
              and pt.splitext(file)[1].lower() in templated_exts:
-            if not is_ignored(pt.basename(file)):
+            if not is_ignored(file):
                 with open(dest, 'w') as fout:
                     fout.write(render(context, file,
                                template_name))
-        elif pt.isfile(abs_file) and not is_ignored(pt.basename(file)):
+        elif pt.isfile(abs_file) and not is_ignored(file):
             shutil.copy(abs_file, dest)
 
     # Build project files
     for proj_name, proj in context['projects'].items():
         proj_dist_dir = pt.join(base_dir, dist_dir, proj_name)
+        proj_dir = pt.join(base_dir, proj_name)
+        proj_files = [file for file in
+                      glob.glob(pt.join(proj_dir, '*'))
+                      if not is_ignored(file) and not pt.isdir(file)
+                         and pt.basename(file) != PROJECT_CONFIG_FILE_NAME]
         mkdir_safe(proj_dist_dir)
+
+        logging.debug(f'project: {proj_name}')
+        logging.debug(f'project directory: {proj_dir}')
+        logging.debug(f'project files: {proj_files}')
+        logging.debug(f'project dist directory: {proj_dist_dir}')
+
+        # Main project page
         with open(pt.join(proj_dist_dir, 'index.html'), 'w') as fout:
             fout.write(render_project(context, proj_name, template_name))
+
+        # Copy project files
+        # Directories and ignored files will not be copied
+        for file in proj_files:
+            shutil.copy(file, proj_dist_dir)
 
 
 def mkdir_safe(dirname):
