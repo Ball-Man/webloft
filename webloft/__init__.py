@@ -125,10 +125,10 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
 
     # Create dist directory
     abs_dist_dir = pt.join(base_dir, dist_dir)
-    if not pt.isdir(abs_dist_dir):
-        os.mkdir(abs_dist_dir)
+    mkdir_safe(abs_dist_dir)
 
     # Generated build
+    context = get_context(base_dir)
     for abs_file, file in zip(abs_template_files, template_files):
         dest = pt.join(abs_dist_dir, file)
 
@@ -138,7 +138,20 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
              and pt.splitext(file)[1].lower() in templated_exts:
             if pt.basename(file)[0] != '_':
                 with open(dest, 'w') as fout:
-                    fout.write(render(get_context(base_dir), file,
+                    fout.write(render(context, file,
                                template_name))
         elif pt.isfile(abs_file) and pt.basename(file)[0] != '_':
             shutil.copy(abs_file, dest)
+
+    # Build project files
+    for proj_name, proj in context['projects'].items():
+        mkdir_safe(pt.join(base_dir, dist_dir, proj_name))
+
+
+def mkdir_safe(dirname):
+    """Make the given directory if it doesn't exist.
+
+    Ignore otherwise.
+    """
+    if not pt.isdir(dirname):
+        os.mkdir(dirname)
