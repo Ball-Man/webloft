@@ -145,7 +145,10 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
 
     # Build project files
     for proj_name, proj in context['projects'].items():
-        mkdir_safe(pt.join(base_dir, dist_dir, proj_name))
+        proj_dist_dir = pt.join(base_dir, dist_dir, proj_name)
+        mkdir_safe(proj_dist_dir)
+        with open(pt.join(proj_dist_dir, 'index.html'), 'w') as fout:
+            fout.write(render_project(context, proj_name, template_name))
 
 
 def mkdir_safe(dirname):
