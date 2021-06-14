@@ -46,14 +46,25 @@ def get_context(base_dir):
     The final context is hence composed of all the configuration files.
 
     The first file that will be searched is index.yaml.
+    Directories containing a file named PROJECT_CONFIG_FILE_NAME will
+    be listed in a subdictionary called 'projects', whose keys are
+    the directory names.
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
         # Load yaml and parse markdown
         context_dic = yaml.safe_load(file)
 
+    # Markdown
     for k in tuple(context_dic.keys()):
         if k in MD_FIELDS:
             context_dic[k] = markdown.markdown(context_dic[k])
+
+    # Projects' subcontexts
+    context_dic['projects'] = {}
+    for proj_name in get_projects(base_dir):
+        with open(pt.join(base_dir, proj_name, PROJECT_CONFIG_FILE_NAME)) \
+                as file:
+            context_dic['projects'][proj_name] = yaml.safe_load(file)
 
     return dj_template.Context(context_dic)
 
@@ -81,7 +92,7 @@ def render_project(context, project_name, template_name='aquarius'):
     but preliminary actions are made in order to render the correct
     project data.
     """
-    context['project'] = context[project_name]
+    context['project'] = context['projects'][project_name]
 
     ret = render(context, PROJECT_TEMPLATE_FILE_NAME, template_name)
 
