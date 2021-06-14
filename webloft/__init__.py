@@ -136,11 +136,11 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
             os.mkdir(dest)
         elif pt.isfile(abs_file) \
              and pt.splitext(file)[1].lower() in templated_exts:
-            if pt.basename(file)[0] != '_':
+            if not is_ignored(pt.basename(file)):
                 with open(dest, 'w') as fout:
                     fout.write(render(context, file,
                                template_name))
-        elif pt.isfile(abs_file) and pt.basename(file)[0] != '_':
+        elif pt.isfile(abs_file) and not is_ignored(pt.basename(file)):
             shutil.copy(abs_file, dest)
 
     # Build project files
@@ -158,3 +158,8 @@ def mkdir_safe(dirname):
     """
     if not pt.isdir(dirname):
         os.mkdir(dirname)
+
+
+def is_ignored(filename):
+    """Return True if the given file starts with '_'."""
+    return pt.basename(filename).startswith('_')
