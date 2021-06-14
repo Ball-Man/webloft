@@ -66,6 +66,12 @@ def get_context(base_dir):
                 as file:
             context_dic['projects'][proj_name] = yaml.safe_load(file)
 
+    # Markdown for project files
+    for projects in context_dic['projects'].values():
+        for k in tuple(projects.keys()):
+            if k in MD_FIELDS:
+                projects[k] = markdown.markdown(projects[k])
+
     return dj_template.Context(context_dic)
 
 
