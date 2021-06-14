@@ -4,6 +4,8 @@ import os
 import shutil
 import glob
 
+from collections import defaultdict
+
 import markdown
 import yaml
 import django.template as dj_template
@@ -16,6 +18,10 @@ TEMPLATES = pt.join(pt.dirname(__file__), 'templates')
 #       file, so that each template can make small variations if
 #       desired.
 MD_FIELDS = {'description'}
+
+# Template constants
+PROJECT_FILE_NAME = '_project.html'
+PROJECT_DEFAULT_DICT = defaultdict(lambda: 'N/A')
 
 
 def get_context(base_dir):
@@ -54,6 +60,21 @@ def render(context, file='index.html', template_name='aquarius'):
     engine = dj_template.Engine(dirs=[pt.join(TEMPLATES, template_name)])
     template = engine.get_template(file)
     return template.render(context)
+
+
+def render_project(context, project_name, template_name='aquarius'):
+    """Render a template in a string, by project name.
+
+    Internally, it uses the render function to render a specific file,
+    but preliminary actions are made in order to render the correct
+    project data.
+    """
+    context['project'] = context[project_name]
+
+    ret = render(context, PROJECT_FILE_NAME, template_name)
+
+    context['project'] = PROJECT_DEFAULT_DICT
+    return ret
 
 
 def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
