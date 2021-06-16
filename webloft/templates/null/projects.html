@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "_base.html" %}
 
-<head>
-<title>{{ name }} | Projects</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-
-<body>
-<h1>Projects</h1>
-{% for proj_name, proj_dict in projects.items %}
-  <a href="{{ proj_name }}/index.html"><h2>{{ proj_dict.name }}</h2></a>
-  {% if "shortdesc" in proj_dict %}
-    {{ proj_dict.shortdesc }}
-  {% else %}
-    {{ proj_dict.description | safe }}
-  {% endif %} <br><br>
-{% endfor %}
-</body>
-
-</html>
+{% block title %}{{ name }} | Projects{% endblock %}
+{% block body %}
+  <h1>Projects</h1>
+  {% for proj_name, proj_dict in projects.items %}
+    <a href="{{ proj_name }}/index.html"><h2>{{ proj_dict.name }}</h2></a>
+    {% if "shortdesc" in proj_dict %}
+      {{ proj_dict.shortdesc }}
+    {% else %}
+      {{ proj_dict.description | safe }}
+    {% endif %} <br><br>
+  {% endfor %}
+{% endblock %}

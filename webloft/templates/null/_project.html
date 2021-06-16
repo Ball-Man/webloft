@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "_base.html" %}
 
-<head>
-<title>{{ name }} - {{ project.name }}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
+{% block title %}{{ name }} | {{ project.name }}{% endblock %}
 
-<body>
-<h1>{{ project.name }}</h1>
-{{ project.description | safe}}
-</body>
-
-</html>
+{% block body %}
+  <h1>{{ project.name }}</h1>
+  {{ project.description | safe}}
+{% endblock %}
