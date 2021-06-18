@@ -4,6 +4,7 @@ import os
 import shutil
 import glob
 import logging
+import copy
 
 from collections import defaultdict
 
@@ -23,7 +24,14 @@ MD_FIELDS = {'description'}
 # Template constants
 PROJECT_TEMPLATE_FILE_NAME = '_project.html'
 PROJECT_CONFIG_FILE_NAME = 'project.yaml'
-PROJECT_DEFAULT_DICT = defaultdict(lambda: 'N/A')
+
+# These type of images will automatically be displayed in project pages
+PROJECT_IMAGE_TYPES = 'png', 'bmp', 'gif', 'jpg', 'jpeg'
+
+# Dictionary used as base for all project ones
+PROJECT_DEFAULT_DICT = defaultdict(
+    lambda: 'N/A',
+    {'image_types': PROJECT_IMAGE_TYPES})
 
 
 def get_projects(base_dir=pt.curdir):
@@ -65,7 +73,12 @@ def get_context(base_dir):
     for proj_name in get_projects(base_dir):
         with open(pt.join(base_dir, proj_name, PROJECT_CONFIG_FILE_NAME)) \
                 as file:
-            context_dic['projects'][proj_name] = yaml.safe_load(file)
+            user_dict = yaml.safe_load(file)
+
+        # Copy default dictionary and update with user data
+        context_dic['projects'][proj_name] = copy.deepcopy(
+            PROJECT_DEFAULT_DICT)
+        context_dic['projects'][proj_name].update(user_dict)
 
     # Markdown for project files
     for projects in context_dic['projects'].values():
