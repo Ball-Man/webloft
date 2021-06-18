@@ -5,4 +5,9 @@
 {% block body %}
   <h1>{{ project.name }}</h1>
   {{ project.description | safe}}
+
+  {# Gallery #}
+  {% for image in project.gallery_images %}
+    <img src="{{ image }}" width="500">
+  {% endfor %}
 {% endblock %}

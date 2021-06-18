@@ -26,7 +26,7 @@ PROJECT_TEMPLATE_FILE_NAME = '_project.html'
 PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 
 # These type of images will automatically be displayed in project pages
-PROJECT_IMAGE_TYPES = 'png', 'bmp', 'gif', 'jpg', 'jpeg'
+PROJECT_IMAGE_TYPES = {'.png', '.bmp', '.gif', '.jpg', '.jpeg'}
 
 # Dictionary used as base for all project ones
 PROJECT_DEFAULT_DICT = defaultdict(
@@ -78,12 +78,25 @@ def get_context(base_dir):
         # Copy default dictionary and update with user data
         proj_dict = copy.deepcopy(PROJECT_DEFAULT_DICT)
         # Inspect files
+        # Update extensions with user preferences before inspecting
+        if 'image_types' in user_dict:
+            proj_dict['image_types'] = user_dict['image_types']
+
         proj_dir = pt.join(base_dir, proj_name)
         proj_files = [pt.relpath(file, start=proj_dir) for file in
                       glob.glob(pt.join(proj_dir, '*'))
                       if not is_ignored(file) and not pt.isdir(file)
                          and pt.basename(file) != PROJECT_CONFIG_FILE_NAME]
         proj_dict['project_files'] = proj_files
+        proj_dict['gallery_images'] = [
+            file for file in proj_files
+            if str.lower(pt.splitext(file)[1]) in proj_dict['image_types']]
+
+        logging.debug(f'project: {proj_name}')
+        logging.debug(f'project directory: {proj_dir}')
+        logging.debug(f"project files: {proj_dict['project_files']}")
+        logging.debug(f"project image types: {proj_dict['image_types']}")
+        logging.debug(f"project gallery: {proj_dict['gallery_images']}")
 
         context_dic['projects'][proj_name] = proj_dict
         context_dic['projects'][proj_name].update(user_dict)
@@ -170,11 +183,6 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
         proj_dist_dir = pt.join(base_dir, dist_dir, proj_name)
         proj_dir = pt.join(base_dir, proj_name)
         mkdir_safe(proj_dist_dir)
-
-        logging.debug(f'project: {proj_name}')
-        logging.debug(f'project directory: {proj_dir}')
-        logging.debug(f"project files: {proj['project_files']}")
-        logging.debug(f'project dist directory: {proj_dist_dir}')
 
         # Main project page
         with open(pt.join(proj_dist_dir, 'index.html'), 'w') as fout:
