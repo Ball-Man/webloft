@@ -76,8 +76,16 @@ def get_context(base_dir):
             user_dict = yaml.safe_load(file)
 
         # Copy default dictionary and update with user data
-        context_dic['projects'][proj_name] = copy.deepcopy(
-            PROJECT_DEFAULT_DICT)
+        proj_dict = copy.deepcopy(PROJECT_DEFAULT_DICT)
+        # Inspect files
+        proj_dir = pt.join(base_dir, proj_name)
+        proj_files = [pt.relpath(file, start=proj_dir) for file in
+                      glob.glob(pt.join(proj_dir, '*'))
+                      if not is_ignored(file) and not pt.isdir(file)
+                         and pt.basename(file) != PROJECT_CONFIG_FILE_NAME]
+        proj_dict['project_files'] = proj_files
+
+        context_dic['projects'][proj_name] = proj_dict
         context_dic['projects'][proj_name].update(user_dict)
 
     # Markdown for project files
@@ -161,15 +169,11 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
     for proj_name, proj in context['projects'].items():
         proj_dist_dir = pt.join(base_dir, dist_dir, proj_name)
         proj_dir = pt.join(base_dir, proj_name)
-        proj_files = [file for file in
-                      glob.glob(pt.join(proj_dir, '*'))
-                      if not is_ignored(file) and not pt.isdir(file)
-                         and pt.basename(file) != PROJECT_CONFIG_FILE_NAME]
         mkdir_safe(proj_dist_dir)
 
         logging.debug(f'project: {proj_name}')
         logging.debug(f'project directory: {proj_dir}')
-        logging.debug(f'project files: {proj_files}')
+        logging.debug(f"project files: {proj['project_files']}")
         logging.debug(f'project dist directory: {proj_dist_dir}')
 
         # Main project page
@@ -178,8 +182,8 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
 
         # Copy project files
         # Directories and ignored files will not be copied
-        for file in proj_files:
-            shutil.copy(file, proj_dist_dir)
+        for file in proj['project_files']:
+            shutil.copy(pt.join(proj_dir, file), proj_dist_dir)
 
 
 def mkdir_safe(dirname):
