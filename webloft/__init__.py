@@ -88,18 +88,21 @@ def get_context(base_dir):
                       if not is_ignored(file) and not pt.isdir(file)
                          and pt.basename(file) != PROJECT_CONFIG_FILE_NAME]
         proj_dict['project_files'] = proj_files
+        # Update project files before computing the gallery
+        if 'project_files' in user_dict:
+            proj_dict['project_files'] = user_dict['project_files']
         proj_dict['gallery_images'] = [
             file for file in proj_files
             if str.lower(pt.splitext(file)[1]) in proj_dict['image_types']]
+
+        context_dic['projects'][proj_name] = proj_dict
+        context_dic['projects'][proj_name].update(user_dict)
 
         logging.debug(f'project: {proj_name}')
         logging.debug(f'project directory: {proj_dir}')
         logging.debug(f"project files: {proj_dict['project_files']}")
         logging.debug(f"project image types: {proj_dict['image_types']}")
         logging.debug(f"project gallery: {proj_dict['gallery_images']}")
-
-        context_dic['projects'][proj_name] = proj_dict
-        context_dic['projects'][proj_name].update(user_dict)
 
     # Markdown for project files
     for projects in context_dic['projects'].values():
