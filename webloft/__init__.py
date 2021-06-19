@@ -30,12 +30,18 @@ PROJECT_IMAGE_TYPES = {'.png', '.bmp', '.gif', '.jpg', '.jpeg'}
 
 # Dictionary used as base for all project ones
 INDEX_DEFAULT_DICT = defaultdict(
-    lambda: 'N/A',
-    {'logo': 'logo.png'})
+    lambda: None,
+    {'name': 'Name',
+     'description': 'Description',
+     'logo': 'logo.png',
+     'contacts': [],
+     'contacts_description': 'Contacts'})
 
 PROJECT_DEFAULT_DICT = defaultdict(
-    lambda: 'N/A',
-    {'image_types': PROJECT_IMAGE_TYPES})
+    lambda: None,
+    {'image_types': PROJECT_IMAGE_TYPES,
+     'name': 'Project name',
+     'description': 'Project description'})
 
 
 def get_projects(base_dir=pt.curdir):
