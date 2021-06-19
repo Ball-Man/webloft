@@ -1,4 +1,6 @@
 import logging
+import argparse
+import os
 
 import webloft
 
@@ -10,9 +12,21 @@ LOGGING_LEVEL = logging.DEBUG
 def main():
     try:
         setup_logging()
-        webloft.build()
+        args = setup_argparse()
+
+        webloft.build(base_dir=args.path)
     except Exception as e:
         logging.exception(e)
+
+
+def setup_argparse():
+    """Setup the command line arguments."""
+    parser = argparse.ArgumentParser(description='Generate a static website.')
+    parser.add_argument('path', type=str, nargs='?', default=os.curdir,
+                        help='a path to the directory containing the '
+                             'configuration files '
+                             '(default: current directory)')
+    return parser.parse_args()
 
 
 def setup_logging():
