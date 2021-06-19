@@ -14,7 +14,7 @@ def main():
         setup_logging()
         args = setup_argparse()
 
-        webloft.build(base_dir=args.path)
+        webloft.build(base_dir=args.path, template_name=args.template)
     except Exception as e:
         logging.exception(e)
 
@@ -26,7 +26,12 @@ def setup_argparse():
                         help='a path to the directory containing the '
                              'configuration files '
                              '(default: current directory)')
-    return parser.parse_args()
+    parser.add_argument('-t', '--template', type=str, default='null',
+                        help='the name of the template to be used')
+
+    args = parser.parse_args()
+    logging.debug(f'given arguments: {args}')
+    return args
 
 
 def setup_logging():
