@@ -190,8 +190,9 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
             shutil.copy(abs_file, dest)
 
     # Copy logo
-    if context['logo'] is not None and pt.isfile(context['logo']):
-        shutil.copy(context['logo'], abs_dist_dir)
+    if context['logo'] is not None and pt.isfile(
+            logo := pt.join(base_dir, context['logo'])):
+        shutil.copy(logo, abs_dist_dir)
         logging.debug(f"found logo: {context['logo']}")
 
     # Build project files
