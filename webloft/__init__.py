@@ -29,6 +29,10 @@ PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 PROJECT_IMAGE_TYPES = {'.png', '.bmp', '.gif', '.jpg', '.jpeg'}
 
 # Dictionary used as base for all project ones
+INDEX_DEFAULT_DICT = defaultdict(
+    lambda: 'N/A',
+    {'logo': 'logo.png'})
+
 PROJECT_DEFAULT_DICT = defaultdict(
     lambda: 'N/A',
     {'image_types': PROJECT_IMAGE_TYPES})
@@ -61,12 +65,16 @@ def get_context(base_dir):
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
         # Load yaml and parse markdown
-        context_dic = yaml.safe_load(file)
+        user_context_dic = yaml.safe_load(file)
 
     # Markdown
-    for k in tuple(context_dic.keys()):
+    for k in tuple(user_context_dic.keys()):
         if k in MD_FIELDS:
-            context_dic[k] = markdown.markdown(context_dic[k])
+            user_context_dic[k] = markdown.markdown(user_context_dic[k])
+
+    # Use defaults
+    context_dic = copy.deepcopy(INDEX_DEFAULT_DICT)
+    context_dic.update(user_context_dic)
 
     # Projects' subcontexts
     context_dic['projects'] = {}
@@ -180,6 +188,11 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
                                template_name))
         elif pt.isfile(abs_file) and not is_ignored(file):
             shutil.copy(abs_file, dest)
+
+    # Copy logo
+    if context['logo'] is not None and pt.isfile(context['logo']):
+        shutil.copy(context['logo'], abs_dist_dir)
+        logging.debug(f"found logo: {context['logo']}")
 
     # Build project files
     for proj_name, proj in context['projects'].items():
