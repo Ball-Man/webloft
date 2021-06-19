@@ -8,8 +8,11 @@ LOGGING_LEVEL = logging.DEBUG
 
 
 def main():
-    setup_logging()
-    webloft.build()
+    try:
+        setup_logging()
+        webloft.build()
+    except Exception as e:
+        logging.exception(e)
 
 
 def setup_logging():
