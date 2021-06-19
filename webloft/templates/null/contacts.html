@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ name }} | Contacts{% endblock %}
+
+{% block body %}
+  <h1>Contacts</h1>
+  {{ contacts_description | safe}} <br>
+  {% for contact in contacts %}
+    {{ contact.name }} | {{ contact.body }} <br>
+  {% endfor %}
+{% endblock %}
