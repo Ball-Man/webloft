@@ -8,6 +8,11 @@
   --transition-speed: 600ms;
 }
 
+@font-face {
+  font-family: Roboto;
+  src: url(/roboto-reg.ttf);
+}
+
 body {
   color: black;
   background-color: white;
@@ -30,6 +35,7 @@ body::-webkit-scrollbar-thumb {
 main {
   margin-left: 5rem;
   padding: 1rem;
+  font-family: Roboto;
 }
 
 .navbar {
@@ -175,6 +181,10 @@ main {
   .navbar:hover .logo-text
   {
     left: 0px;
+  }
+
+  main {
+    padding: 1.8rem;
   }
 }
 
