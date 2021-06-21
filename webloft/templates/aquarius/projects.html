@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ name }} | Projects{% endblock %}
+{% block body %}
+  <h1>Projects</h1>
+  {% for proj_name, proj_dict in projects.items %}
+    <a href="{{ proj_name }}/index.html"><h2>{{ proj_dict.name }}</h2></a>
+    {% if "shortdesc" in proj_dict %}
+      {{ proj_dict.shortdesc }}
+    {% else %}
+      {{ proj_dict.description | safe }}
+    {% endif %} <br><br>
+  {% endfor %}
+{% endblock %}
