@@ -38,6 +38,10 @@ main {
   font-family: Roboto;
 }
 
+.markdown-body {
+  font-family: Roboto !important;
+}
+
 .navbar {
   position: fixed;
   background-color: var(--bg-primary);
