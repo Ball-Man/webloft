@@ -3,7 +3,9 @@
 {% block title %}{{ name }} | {{ project.name }}{% endblock %}
 
 {% block body %}
-  <h1>{{ project.name }}</h1>
+  <div class="markdown-body">
+    <h1>{{ project.name }}</h1>
+  </div>
   {{ project.description | safe}}
 
   {# Gallery #}

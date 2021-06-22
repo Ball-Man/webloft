@@ -3,7 +3,9 @@
 {% block title %}{{ name }} | Contacts{% endblock %}
 
 {% block body %}
-  <h1>Contacts</h1>
+  <div class="markdown-body">
+    <h1>Contacts</h1>
+  </div>
   {{ contacts_description | safe}} <br>
   {% for contact in contacts %}
     {{ contact.name }} | {{ contact.body }} <br>

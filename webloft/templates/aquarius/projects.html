@@ -2,7 +2,9 @@
 
 {% block title %}{{ name }} | Projects{% endblock %}
 {% block body %}
-  <h1>Projects</h1>
+  <div class="markdown-body">
+    <h1>Projects</h1>
+  </div>
   {% for proj_name, proj_dict in projects.items %}
     <a href="{{ proj_name }}/index.html"><h2>{{ proj_dict.name }}</h2></a>
     {% if "shortdesc" in proj_dict %}
