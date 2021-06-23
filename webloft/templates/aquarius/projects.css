@@ -5,11 +5,19 @@
   margin-bottom: 5rem;
 }
 
+.cards::after {
+  content: '';
+  flex: auto;
+}
+
 .card {
   flex: 0 1 24%;
   box-shadow: 0 2px 3px 0 rgba(0,0,0,0.1);
   transition: 0.3s;
-  margin-top: 1rem;
+  margin: 1rem 0.5rem 0rem 0.5rem;
+
+  text-decoration: none;
+  color: black;
 }
 
 .card:hover {
