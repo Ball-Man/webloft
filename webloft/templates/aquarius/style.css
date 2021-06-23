@@ -88,7 +88,7 @@ main {
   margin-left: 1rem;
 }
 
-.nav-link svg {
+.nav-link svg, #logo {
   width: 2rem;
   min-width: 2rem;
   margin: 0 1.5rem;
@@ -119,21 +119,12 @@ main {
   width: 100%;
 }
 
-.logo svg {
-  transform: rotate(0deg);
-  transition: var(--transition-speed);
-}
-
 .logo-text
 {
   display: inline;
   position: absolute;
   left: -999px;
   transition: var(--transition-speed);
-}
-
-.navbar:hover .logo svg {
-  transform: rotate(-180deg);
 }
 
 /* Small screens */
@@ -175,11 +166,6 @@ main {
 
   .navbar:hover .link-text {
     display: inline;
-  }
-
-  .navbar:hover .logo svg
-  {
-    margin-left: 11rem;
   }
 
   .navbar:hover .logo-text
