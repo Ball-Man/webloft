@@ -6,8 +6,8 @@
 {% block body %}
   <div class="markdown-body">
     <h1>{{ project.name }}</h1>
+    {{ project.description | safe}}
   </div>
-  {{ project.description | safe}}
 
   {# Gallery #}
   <section class="cards">
