@@ -1,0 +1,37 @@
+.cards {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 5rem;
+}
+
+.card {
+  flex: 0 1 24%;
+  box-shadow: 0 2px 3px 0 rgba(0,0,0,0.1);
+  transition: 0.3s;
+  margin-top: 1rem;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card_content {
+  padding: 2px 16px;
+}
+
+.card img {
+  width: 100%;
+}
+
+@media only screen and (max-width: 960px) {
+  .card {
+    flex: 0 1 49%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    flex: 0 1 98%;
+  }
+}
