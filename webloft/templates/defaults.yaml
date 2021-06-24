@@ -4,6 +4,8 @@ index:
   logo: logo.png
   contacts: []
   contacts_description: ''
+  projects_header: Projects
+  contacts_header: Contacts
 
 project:
   image_types: [.png, .bmp, .gif, .jpg, .jpeg]

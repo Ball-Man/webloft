@@ -1,13 +1,13 @@
 {% extends "_base.html" %}
 
-{% block title %}{{ name }} | Projects{% endblock %}
+{% block title %}{{ name }} | {{ projects_header | title }}{% endblock %}
 {% block add_head %}
   <link rel="stylesheet" type="text/css" href="projects.css">
 {% endblock %}
 
 {% block body %}
   <div class="markdown-body">
-    <h1>Projects</h1>
+    <h1>{{ projects_header | title }}</h1>
   </div>
   <section class="cards">
     {% for proj_name, proj_dict in projects.items %}

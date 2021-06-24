@@ -11,9 +11,9 @@
 <img src="{{ logo }}" alt="{{ name }}, " width="50">
 index:<br>
 <ul>
-<li><a href="/index.html">home</a></li>
-<li><a href="/projects.html">projects</a></li>
-<li><a href="/contacts.html">contacts</a></li>
+<li><a href="/index.html">Home</a></li>
+<li><a href="/projects.html">{{ projects_header | title }}</a></li>
+<li><a href="/contacts.html">{{ contacts_header | title }}</a></li>
 </ul>
 {% block body %} {% endblock %}
 </body>
