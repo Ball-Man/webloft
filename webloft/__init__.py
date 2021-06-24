@@ -249,6 +249,13 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
             shutil.copy(pt.join(proj_dir, file), proj_dist_dir)
 
 
+def delete(base_dir=pt.curdir, dist_dir='dist'):
+    """Delete the dist directory and exit."""
+    dist_dir_path = pt.join(base_dir, dist_dir)
+    logging.debug(f'removing {dist_dir_path} and all its content')
+    shutil.rmtree(dist_dir_path)
+
+
 def mkdir_safe(dirname):
     """Make the given directory if it doesn't exist.
 

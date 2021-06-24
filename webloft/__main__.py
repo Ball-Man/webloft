@@ -14,7 +14,10 @@ def main():
         setup_logging()
         args = setup_argparse()
 
-        webloft.build(base_dir=args.path, template_name=args.template)
+        if args.delete:
+            webloft.delete(base_dir=args.path)
+        else:
+            webloft.build(base_dir=args.path, template_name=args.template)
     except Exception as e:
         logging.exception(e)
 
@@ -28,6 +31,8 @@ def setup_argparse():
                              '(default: current directory)')
     parser.add_argument('-t', '--template', type=str, default='null',
                         help='the name of the template to be used')
+    parser.add_argument('-d', '--delete', action='store_true',
+                        help='remove the build directory and exit.')
 
     args = parser.parse_args()
     logging.debug(f'given arguments: {args}')
