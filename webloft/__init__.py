@@ -5,6 +5,7 @@ import shutil
 import glob
 import logging
 import copy
+import functools
 
 from collections import defaultdict
 
@@ -26,6 +27,11 @@ MD_FIELDS = {'description'}
 # Template constants
 PROJECT_TEMPLATE_FILE_NAME = '_project.html'
 PROJECT_CONFIG_FILE_NAME = 'project.yaml'
+
+# Callable, preferable to the simple markdown.markdown since it
+# encapsules all the extensions used.
+MARKDOWN_PARTIAL = functools.partial(markdown.markdown,
+                                     extensions=['fenced_code'])
 
 
 def get_projects(base_dir=pt.curdir):
@@ -86,7 +92,7 @@ def get_context(base_dir, template_name):
     the directory names.
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
-        # Load yaml and parse markdown
+        # Load yaml
         user_context_dic = yaml.safe_load(file) or {}
 
     # Optionally load description from file
@@ -97,7 +103,7 @@ def get_context(base_dir, template_name):
     # Markdown
     for k in tuple(user_context_dic.keys()):
         if k in MD_FIELDS:
-            user_context_dic[k] = markdown.markdown(user_context_dic[k])
+            user_context_dic[k] = MARKDOWN_PARTIAL(user_context_dic[k])
 
     # Use defaults
     context_dic, proj_dict_default = get_defaults(template_name)
@@ -148,7 +154,7 @@ def get_context(base_dir, template_name):
     for projects in context_dic['projects'].values():
         for k in tuple(projects.keys()):
             if k in MD_FIELDS:
-                projects[k] = markdown.markdown(projects[k])
+                projects[k] = MARKDOWN_PARTIAL(projects[k])
 
     return dj_template.Context(context_dic)
 
