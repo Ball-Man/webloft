@@ -1,0 +1,21 @@
+.contacts {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5rem;
+  flex-wrap: wrap;
+}
+
+.markdown-body {
+  margin-bottom: 1rem
+}
+
+.contact_item {
+  flex: 0 1 49%;
+  align-content: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .contacts {
+    width: 50%;
+  }
+}
