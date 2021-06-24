@@ -9,6 +9,8 @@ import functools
 
 from collections import defaultdict
 
+from . import log
+
 import markdown
 import yaml
 import django.template as dj_template
@@ -32,6 +34,9 @@ PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 # encapsules all the extensions used.
 MARKDOWN_PARTIAL = functools.partial(markdown.markdown,
                                      extensions=['fenced_code'])
+
+# Start logging when the module is imported
+log.setup_logging()
 
 
 def get_projects(base_dir=pt.curdir):
