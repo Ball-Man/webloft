@@ -6,6 +6,18 @@
   <h1>Contacts</h1>
   {{ contacts_description | safe}} <br>
   {% for contact in contacts %}
-    {{ contact.name }} | {{ contact.body }} <br>
+    {{ contact.name }} |
+    {% if "url" in contact %}
+      <a href="{{ contact.url }}">
+        {% if "display" in contact %}
+          {{ contact.display }}
+        {% else %}
+          {{ contact.url }}
+        {% endif %}
+      </a>
+    {% elif "display" in contact %}
+      {{ contact.display }}
+    {% endif %}
+    <br>
   {% endfor %}
 {% endblock %}
