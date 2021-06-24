@@ -27,24 +27,6 @@ MD_FIELDS = {'description'}
 PROJECT_TEMPLATE_FILE_NAME = '_project.html'
 PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 
-# These type of images will automatically be displayed in project pages
-PROJECT_IMAGE_TYPES = {'.png', '.bmp', '.gif', '.jpg', '.jpeg'}
-
-# Dictionary used as base for all project ones
-INDEX_DEFAULT_DICT = defaultdict(
-    lambda: None,
-    {'name': 'Name',
-     'description': 'Description',
-     'logo': 'logo.png',
-     'contacts': [],
-     'contacts_description': 'Contacts'})
-
-PROJECT_DEFAULT_DICT = defaultdict(
-    lambda: None,
-    {'image_types': PROJECT_IMAGE_TYPES,
-     'name': 'Project name',
-     'description': 'Project description'})
-
 
 def get_projects(base_dir=pt.curdir):
     """Return the list of projects in the selected base directory.
@@ -89,7 +71,7 @@ def get_defaults(template_name=None):
     return index_defaults, project_defaults
 
 
-def get_context(base_dir):
+def get_context(base_dir, template_name):
     """Retrieve a django-ready context from configuration files.
 
     A django context is nothing more than a dictionary.
@@ -105,7 +87,7 @@ def get_context(base_dir):
     """
     with open(pt.join(base_dir, 'index.yaml')) as file:
         # Load yaml and parse markdown
-        user_context_dic = yaml.safe_load(file)
+        user_context_dic = yaml.safe_load(file) or {}
 
     # Markdown
     for k in tuple(user_context_dic.keys()):
@@ -113,7 +95,7 @@ def get_context(base_dir):
             user_context_dic[k] = markdown.markdown(user_context_dic[k])
 
     # Use defaults
-    context_dic = copy.deepcopy(INDEX_DEFAULT_DICT)
+    context_dic, proj_dict_default = get_defaults(template_name)
     context_dic.update(user_context_dic)
 
     # Projects' subcontexts
@@ -121,10 +103,10 @@ def get_context(base_dir):
     for proj_name in get_projects(base_dir):
         with open(pt.join(base_dir, proj_name, PROJECT_CONFIG_FILE_NAME)) \
                 as file:
-            user_dict = yaml.safe_load(file)
+            user_dict = yaml.safe_load(file) or {}
 
         # Copy default dictionary and update with user data
-        proj_dict = copy.deepcopy(PROJECT_DEFAULT_DICT)
+        proj_dict = copy.deepcopy(proj_dict_default)
         # Inspect files
         # Update extensions with user preferences before inspecting
         if 'image_types' in user_dict:
@@ -188,7 +170,7 @@ def render_project(context, project_name, template_name='aquarius'):
 
     ret = render(context, PROJECT_TEMPLATE_FILE_NAME, template_name)
 
-    context['project'] = PROJECT_DEFAULT_DICT
+    context['project'] = None
     return ret
 
 
@@ -214,7 +196,7 @@ def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
     mkdir_safe(abs_dist_dir)
 
     # Generated build
-    context = get_context(base_dir)
+    context = get_context(base_dir, template_name)
     for abs_file, file in zip(abs_template_files, template_files):
         dest = pt.join(abs_dist_dir, file)
 
