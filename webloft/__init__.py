@@ -190,7 +190,7 @@ def render_project(context, project_name, template_name='aquarius'):
     return ret
 
 
-def build(base_dir=pt.curdir, template_name='null', dist_dir='dist',
+def build(base_dir=pt.curdir, template_name='aquarius', dist_dir='dist',
           templated_exts=('.html',)):
     """Render and save an entire template, given the base dir.
 

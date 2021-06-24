@@ -29,7 +29,7 @@ def setup_argparse():
                         help='a path to the directory containing the '
                              'configuration files '
                              '(default: current directory)')
-    parser.add_argument('-t', '--template', type=str, default='null',
+    parser.add_argument('-t', '--template', type=str, default='aquarius',
                         help='the name of the template to be used')
     parser.add_argument('-d', '--delete', action='store_true',
                         help='remove the build directory and exit.')
