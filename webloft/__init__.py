@@ -89,6 +89,11 @@ def get_context(base_dir, template_name):
         # Load yaml and parse markdown
         user_context_dic = yaml.safe_load(file) or {}
 
+    # Optionally load description from file
+    if user_context_dic.get('description_file') is not None:
+        user_context_dic['description'] = open(
+            pt.join(base_dir, user_context_dic['description_file'])).read()
+
     # Markdown
     for k in tuple(user_context_dic.keys()):
         if k in MD_FIELDS:
@@ -124,6 +129,11 @@ def get_context(base_dir, template_name):
         proj_dict['gallery_images'] = [
             file for file in proj_files
             if str.lower(pt.splitext(file)[1]) in proj_dict['image_types']]
+
+        # Optionally load description from file
+        if user_dict.get('description_file') is not None:
+            user_dict['description'] = open(
+                pt.join(proj_dir, user_dict['description_file'])).read()
 
         context_dic['projects'][proj_name] = proj_dict
         context_dic['projects'][proj_name].update(user_dict)

@@ -1,6 +1,7 @@
 index:
   name: Name
   description: ''
+  description_file: null
   logo: logo.png
   contacts: []
   contacts_description: ''
@@ -12,3 +13,4 @@ project:
   name: Project
   shortdesc: ''
   description: ''
+  description_file: null
