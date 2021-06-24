@@ -13,6 +13,8 @@ import yaml
 import django.template as dj_template
 
 TEMPLATES = pt.join(pt.dirname(__file__), 'templates')
+GLOBAL_DEFAULTS_FILE = pt.join(TEMPLATES, 'defaults.yaml')
+TEMPLATE_DEFAULTS_FILE_NAME = '_defaults.yaml'
 
 # Fields that will be rendered using markdown
 # All other fields will be used as plain text
@@ -53,6 +55,38 @@ def get_projects(base_dir=pt.curdir):
     return [pt.basename(pt.dirname(file)) for file
             in glob.glob(pt.join(base_dir, '**', '*'))
             if pt.basename(file) == PROJECT_CONFIG_FILE_NAME]
+
+
+def get_defaults(template_name=None):
+    """Return a pair of dictionaries with default values for contexts.
+
+    The return format is (index_defaults, project_defaults).
+    """
+    # Retrieve global defaults
+    with open(GLOBAL_DEFAULTS_FILE) as file:
+        defaults = yaml.safe_load(file)
+
+    index_defaults = defaults['index']
+    project_defaults = defaults['project']
+
+    if template_name is None:
+        return index_defaults, project_defaults
+
+    # Update with template specific defaults
+    template_default_file = pt.join(TEMPLATES, template_name,
+                                    TEMPLATE_DEFAULTS_FILE_NAME)
+
+    # If no file is given, return the globals
+    if not pt.isfile(template_default_file):
+        return index_defaults, project_defaults
+
+    with open(template_default_file) as file:
+        template_defaults = yaml.safe_load(file)
+
+    index_defaults.update(template_defaults.get('index', {}))
+    project_defaults.update(template_defaults.get('project', {}))
+
+    return index_defaults, project_defaults
 
 
 def get_context(base_dir):

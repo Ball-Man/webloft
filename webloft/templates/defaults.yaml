@@ -1,0 +1,12 @@
+index:
+  name: Name
+  description: ''
+  logo: logo.png
+  contacts: []
+  contacts_description: ''
+
+project:
+  image_types: [.png, .bmp, .gif, .jpg, .jpeg]
+  name: Project
+  shortdesc: ''
+  description: ''
