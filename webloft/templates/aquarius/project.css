@@ -1,0 +1,20 @@
+@media only screen and (min-width: 960px) {
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .markdown-body {
+    grid-column-start: 1;
+  }
+
+  .cards {
+    padding: 1.8rem;
+    grid-column-start: 2;
+  }
+
+  .card {
+    flex: 0 1 30%;
+  }
+}
