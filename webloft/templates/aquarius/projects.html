@@ -14,7 +14,8 @@
       <a class="card" href="{{ proj_name }}/index.html">
       <div>
         {% if proj_dict.gallery_images %}
-          <img src="{{ proj_name }}/{{ proj_dict.gallery_images.0 }}">
+          <img src="{{ proj_name }}/{% if proj_dict.main_image %}{{ proj_dict.main_image }}{% else %}{{ proj_dict.gallery_images.0 }}{% endif %}">
+
         {% endif %}
         <div class="card_content">
           <h4>{{ proj_dict.name }}</h4>
