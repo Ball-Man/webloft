@@ -13,18 +13,3 @@
   flex: 0 1 49%;
   align-content: center;
 }
-
-.contacts a {
-  color: #0366d6;
-  text-decoration: none;
-}
-
-.contacts a:hover {
-  text-decoration: underline;
-}
-
-@media only screen and (min-width: 600px) {
-  .contacts {
-    width: 50%;
-  }
-}
