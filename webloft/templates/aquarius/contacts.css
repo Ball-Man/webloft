@@ -1,12 +1,7 @@
 .contacts {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5rem;
   flex-wrap: wrap;
-}
-
-.markdown-body {
-  margin-bottom: 1rem
 }
 
 .contact_item {
