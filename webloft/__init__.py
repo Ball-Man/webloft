@@ -33,7 +33,7 @@ PROJECT_CONFIG_FILE_NAME = 'project.yaml'
 # Callable, preferable to the simple markdown.markdown since it
 # encapsules all the extensions used.
 MARKDOWN_PARTIAL = functools.partial(markdown.markdown,
-                                     extensions=['fenced_code'])
+                                     extensions=['fenced_code', 'tables'])
 
 # Start logging when the module is imported
 log.setup_logging()
