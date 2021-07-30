@@ -7,8 +7,6 @@ import logging
 import copy
 import functools
 
-from collections import defaultdict
-
 from . import log
 
 import markdown
