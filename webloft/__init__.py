@@ -116,7 +116,17 @@ def get_context(base_dir, template_name):
 
     # Projects' subcontexts
     context_dic['projects'] = {}
-    for proj_name in get_projects(base_dir):
+
+    # Use user defined projects list if defined
+    if context_dic['projects_list'] is None:
+        proj_list = get_projects(base_dir)
+    else:
+        proj_list = context_dic['projects_list']
+
+    # An elegant alternative, with a side effect on empty list could be:
+    # proj_list = context_dic['projects_list'] or get_projects(base_dir)
+
+    for proj_name in proj_list:
         with open(pt.join(base_dir, proj_name, PROJECT_CONFIG_FILE_NAME)) \
                 as file:
             user_dict = yaml.safe_load(file) or {}
