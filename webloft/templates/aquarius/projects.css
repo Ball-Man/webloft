@@ -4,10 +4,11 @@
   flex-wrap: wrap;
 }
 
-.cards::after {
+/*.cards::after {
   content: '';
   flex: auto;
 }
+*/
 
 .card {
   flex: 0 1 24%;
